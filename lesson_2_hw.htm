@@ -1,0 +1,109 @@
+<script>
+	response = {
+		data: [
+				{
+					score : 10,
+					name : 'Bob',
+					age : 18,
+					toString : function() { return create_string(this); }
+				},
+				{
+					score : 115,
+					name : 'Artur',
+					age : 22,
+					toString : function() { return create_string(this); }					
+				},
+				{
+					score : 25,
+					name : 'Kate',
+					age : 15,
+					toString : function() { return create_string(this); }					
+				},
+				{
+					score : 40,
+					name : 'Misha',
+					age : 20,
+					toString : function() { return create_string(this); }					
+				},
+				{
+					score : 2,
+					name : 'Masha',
+					age : 20,
+					toString : function() { return create_string(this); }					
+				},
+				{
+					score : 81,
+					name : 'Boris',
+					age : 22,
+					toString : function() { return create_string(this); }					
+				},
+				{
+					score : 67,
+					name : 'Venera',
+					age : 30,
+					toString : function() { return create_string(this); }					
+				},
+				{
+					score : 46,
+					name : 'Mikola',
+					age : 18,
+					toString : function() { return create_string(this); }					
+				},
+				{
+					score : 23,
+					name : 'Saaha',
+					age : 28,
+					toString : function() { return create_string(this); }					
+				},
+				{
+					score : 77,
+					name : 'Lila',
+					age : 26,
+					toString : function() { return create_string(this); }					
+				},
+			],
+	};
+
+	function create_string(values) {
+		return values.name + ' - ' + values.age + ': ' + values.score;
+	}
+
+	function data_work(response) {
+
+		result = new Object();
+
+		result.all_score = 0;
+		result.over_18_years_old = [];
+		result.name_start_b = [];
+		result.toString = [];
+		result.group = [];
+
+		buffer = [];
+
+		for (i = 0; i < response.data.length; i++) {
+
+			result.all_score += response.data[i].score;
+
+			if (response.data[i].age > 18)
+				result.over_18_years_old = result.over_18_years_old.concat([response.data[i]]);
+
+			if (response.data[i].name.charAt(0) == 'B' || response.data[i].name.charAt(0) == 'b')
+				result.name_start_b = result.name_start_b.concat([response.data[i]]);
+
+			result.toString = result.toString.concat([String(response.data[i])]);
+
+			if (!buffer[response.data[i].age])
+				buffer[response.data[i].age] = response.data[i].score;
+			else
+				buffer[response.data[i].age] += response.data[i].score;
+		}
+
+		for (var key in buffer) {
+			result.group = result.group.concat([key + ' : ' + buffer[key]]);
+		}
+
+		return result;
+	}
+
+	console.log(data_work(response));
+</script>
