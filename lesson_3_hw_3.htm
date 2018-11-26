@@ -1,0 +1,99 @@
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+
+<script type="text/javascript">
+
+	/**
+	* реализовать функцию-конструктор копилки
+	* - номер счета - 3-х значное число, начиная с 1
+	* - если номер меньше трехзначного числа, слева заполняем нулями
+	* - состояние счета при создании, учитывается в транзакциях
+	*/
+
+	function Moneybox(start_sum) {
+
+		this.pad = (str, max) => {
+			str = str.toString();
+	 		return str.length < max ? this.pad("0" + str, max) : str;
+		}
+
+		var last_account_number = sessionStorage.getItem('last_account_number');
+
+		if (last_account_number === undefined)
+			this.account_number = 1;
+		else
+			this.account_number = Number(last_account_number) + 1;
+
+		var account_number_length = this.account_number.toString().length;
+
+			if (account_number_length < 3)
+				this.account_number = this.pad(this.account_number, 3);
+
+		sessionStorage.setItem("last_account_number", this.account_number);
+
+		this.sum = (start_sum ? start_sum : 0);
+		this.transaction = '';
+	}
+
+	/**
+	* реализовать получение информации о состоянии копилки
+	* вывод должен быть в формате
+	*
+	* ***
+	* Номер: 001
+	* На счету: 150
+	* Транзакции: 200, -100, 50
+	* ***
+	*/
+
+	function getMoneyboxInfo(box_number) {
+
+		var info_box_name = `moneybox${box_number}Info`;
+		window[info_box_name] = `***\nНомер: ${this.account_number}\nНа счету: ${this.sum}\nТранзакции: ${this.transaction}\n***`;
+	}
+
+	/**
+	* реализовать добавление в копилку
+	*/
+	function addToMoneybox(count) {
+		this.sum += count;
+		(this.transaction ? this.transaction += `, ${count}` : this.transaction += count);
+	}
+
+	/**
+	* реализовать изъятие из копилки
+	*/
+	function takeFromMoneybox(count) {
+		this.sum -= count;
+		(this.transaction ? this.transaction += `, -${count}` : this.transaction += `- ${count}`);
+	}
+
+	const moneybox1 = new Moneybox(100);
+	const moneybox2 = new Moneybox;
+
+	addToMoneybox.call(moneybox1, 100);
+	addToMoneybox.call(moneybox1, 200);
+	takeFromMoneybox.call(moneybox1, 200);
+
+	const add100ToMoneybox1 = addToMoneybox.bind(moneybox1, 100);
+	const addToMoneybox2 = addToMoneybox.bind(moneybox2);
+	const take250FromMoneybox2 = takeFromMoneybox.bind(moneybox2, 250);
+	const take10FromMoneybox1 = takeFromMoneybox.bind(moneybox1, 10);
+
+	/**
+	* используя addToMoneybox и takeFromMoneybox определи следующие функции
+	*/
+	add100ToMoneybox1();    // добавит 100 в moneybox1
+	addToMoneybox2(500);    // добавит 500 в moneybox2
+	take250FromMoneybox2(); // изымает 250 из moneybox2
+	take10FromMoneybox1();  // изымает 10 из moneybox1
+
+	getMoneyboxInfo.call(moneybox1, 1);
+	getMoneyboxInfo.call(moneybox2, 2);
+
+	/**
+	* используя getMoneyboxInfo определи следующие переменные
+	*/
+	console.log(moneybox1Info);
+	console.log(moneybox2Info);
+
+</script>

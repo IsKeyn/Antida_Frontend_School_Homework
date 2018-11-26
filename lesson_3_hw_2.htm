@@ -1,0 +1,31 @@
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+
+<script type="text/javascript">
+	
+function Rectangle(width, height, units)
+{	
+	this.width = width;
+	this.height = height;
+	this.units = units;
+
+	this.returnInfo = () => {
+		return `Ширина: ${this.width} ${this.units}, Высота: ${this.height} ${this.units}`;
+	}
+}
+
+function getArea() {
+	return `Площадь: ${this.width * this.height}`;
+}
+
+function getPerimetr() {
+	return `Периметр: ${(this.width * 2) + (this.height * 2)}`;
+}
+
+const rectangle = new Rectangle(6, 5, 'метров');
+
+console.log(
+	rectangle.returnInfo(),
+	getArea.call(rectangle),
+	getPerimetr.apply(rectangle),
+);
+</script>
