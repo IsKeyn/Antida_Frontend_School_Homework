@@ -1,0 +1,136 @@
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+
+<script type="text/javascript">
+
+	var secret_number,
+		available_tries,
+		start_tries,
+		finished_game,
+		max,
+		min,
+		warn = 0;
+
+	const style_1 = '\
+		font-size: 20px;\
+		font-style: Tahoma;\
+	';
+
+	function getRandomInt(min, max) {
+		return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+
+	function create_try_word(tries) {
+
+		switch (tries) {
+			case 1:
+				return 'попытка';
+				break;
+
+			case 2:
+			case 3:
+			case 4:
+				return 'попытки';
+				break;
+
+			default:
+				return 'попыток';
+				break; 
+		}
+	}
+
+	function letsplay(tries, f_min, f_max) {
+
+		finished_game = false;
+
+		(typeof(f_min) !== 'number' || f_min < 0 ? min = 0 : min = f_min );
+		(typeof(f_max) !== 'number' || f_max < 0 ? max = 25 : max = f_max );
+
+		if (typeof(tries) == 'number' && tries > 0)
+		{
+			available_tries = tries;
+		}
+		else
+		{
+			available_tries = 10;
+			(tries == undefined ? '' : console.log('%cВы ввели не верное количество попыток, выставлено значение по умолчанию!', style_1));
+		}
+
+		start_tries = available_tries;
+		secret_number = getRandomInt(max, min);
+		word_try = create_try_word(available_tries);
+
+		console.log(`%cПривет я загадал число от ${min} до ${max}! Попробуй угадать, введи команду letstry() - в скобочках твоё число, у тебя ${available_tries} ${word_try}!`, style_1);
+	}
+
+	function letstry(user_number) {
+
+		if (finished_game !== true)
+		{
+			if (available_tries > 0)
+			{
+				if (typeof(user_number) == 'number')
+				{
+					if (user_number < min && user_number > max)
+					{
+						console.log(`%cЗнаешь, тебе следует попробовать числа в данном диапозоне ${min} - ${max} ^_^`, style_1);
+					}
+					else
+					{
+						
+						if (secret_number == user_number)
+						{
+							win_try = start_tries - available_tries + 1;
+							word_try = create_try_word(win_try);
+
+							console.log(`%cПоздравляю ты выиграл! Я действительно загадывал ${secret_number}, ты выиграл с ${win_try} ${word_try}!`, style_1);
+							console.log(`%cТы можешь сыграть ещё, введи команду letsplay() - в скобочках можно ввести желаемое количество попыток. В функцию можно передать ещё 2 параметра и задать диапазон, в котором будет загадано число`, style_1);
+
+							finished_game = true;
+						}
+						else
+						{
+							(user_number > secret_number ? hint = 'меньше' : hint = 'больше');
+
+							word_try = create_try_word(available_tries);
+
+							available_tries--;
+
+							if (available_tries !== 0)
+								console.log(`%cПопробуй ещё раз, я уверен у тебя все получится! Загаданное число ${hint} ${user_number} У тебя осталось ${available_tries} ${word_try}!`, style_1);
+							else
+								console.log('%cТы проиграл, попытки уже закончились! Но ты можешь сыграть ещё, введи команду letsplay() - в скобочках можно ввести желаемое количество попыток. В функцию можно передать ещё 2 параметра и задать диапазон, в котором будет загадано число', style_1);
+						}
+					}
+				}
+				else
+				{
+					if (warn < 1)
+						console.log('%cХорошая попытка, но надо ввести число )', style_1);
+					
+					if (warn == 1)
+						console.log('%cЭто не число, в следущий раз начну забирать попытки!', style_1);
+
+					if (warn > 1)
+					{
+						available_tries--;
+						word_try = create_try_word(available_tries);
+						console.log(`%cЯ предупреждал! У тебя осталось ${available_tries} ${word_try}!`, style_1);
+					}
+
+					warn++;
+				}
+			}
+			else
+			{
+				console.log('%cТы проиграл, попытки уже закончились! Но ты можешь сыграть ещё, введи команду letsplay() - в скобочках можно ввести желаемое количество попыток. В функцию можно передать ещё 2 параметра и задать диапазон, в котором будет загадано число', style_1);
+			}
+		}
+		else
+		{
+			console.log('%cИгра закончена! Но ты можешь сыграть ещё, введи команду letsplay() - в скобочках можно ввести желаемое количество попыток. В функцию можно передать ещё 2 параметра и задать диапазон, в котором будет загадано число', style_1);
+		}
+	}
+
+	letsplay();
+
+</script>
