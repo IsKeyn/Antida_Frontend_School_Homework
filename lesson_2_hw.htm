@@ -65,18 +65,28 @@
 	};
 
 	function create_string(values) {
-		return values.name + ' - ' + values.age + ': ' + values.score;
+		//return values.name + ' - ' + values.age + ': ' + values.score;
+		const { name, age, score } = values;
+		return `${name} - ${age} : ${score}`
 	}
 
 	function data_work(response) {
 
-		result = new Object();
+		// result = new Object();
 
-		result.all_score = 0;
-		result.over_18_years_old = [];
-		result.name_start_b = [];
-		result.toString = [];
-		result.group = [];
+		// result.all_score = 0;
+		// result.over_18_years_old = [];
+		// result.name_start_b = [];
+		// result.toString = [];
+		// result.group = [];
+
+		const result = {
+			all_score: 0,
+			over_18_years_old: [],
+			name_start_b: [],
+			toString: [],
+			group: [],
+		}
 
 		buffer = [];
 
