@@ -1,0 +1,112 @@
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+
+<script>
+{
+	let howOldArray = [],
+		onlyEven = [],
+		onlyAdult = [],
+		onlyNotAdult = [],
+		z = 0,
+		x = 0,
+		c = 0;
+
+	const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+	let Human = {
+		name : 'Артур',
+		lastName : 'С',
+		phrase : 'Hello',
+		get returnPhrase() {
+			return `${this.phrase} ${this.name} ${this.lastName}`;
+		},
+		set actualPhrase(phrs) {
+			this.phrase = phrs;
+		}
+	}
+	
+	Human.actualPhrase = 'Hi';
+
+	let Howold = {
+		age : 18,
+		isAdult() {
+			return (this.age >= 18 ? true : false);
+		}
+	}
+
+	Human = Object.assign({}, Human, Howold);
+
+	for (let i = 0; i < 10; i++)
+		howOldArray[i] = Object.assign({}, Howold, {age: getRandomInt(10, 90)});
+
+	for (let age of howOldArray) {
+		(age.age % 2 == 0 ? onlyEven[z++] = age : '');
+		(age.isAdult() === true ? onlyAdult[x++] = age : onlyNotAdult[c++] = age);
+	}
+
+	console.log(`Возвращаемая фраза: ${Human.returnPhrase}, Результат проверки на возраст: ${Howold.isAdult()}`);
+	console.log('Расширенный объект:', Human);
+	console.log('Массив из обектов:', howOldArray);
+	console.log('Только четные:', onlyEven);
+	console.log('Только старше 18 лет:', onlyAdult);
+	console.log('Только младше 18 лет:', onlyNotAdult);
+}
+
+/* Тут я увидил, что надо было создать класс, а не объект ¯\_(ツ)_/¯ */
+console.log('-------------------------------------------------------------------------------------------------------------------------------------------');
+
+{
+	let hunmanArray = [],
+		firstNameArray = ['Вася', 'Лена', 'Кира', 'Катя', 'Максим', 'Саша', 'Женя', 'Даша', 'Маша', 'Леонид'],
+		secondNameArray = ['Пупкин', 'Билибина', 'Анфалова', 'Яблонская', 'Кузьмин', 'Еськова', 'Кожевникова', 'Белокурская', 'Пивоварова', 'Нуриев'],
+		onlyEven = [],
+		onlyAdult = [],
+		onlyNotAdult = [],
+		z = 0,
+		x = 0,
+		c = 0;
+
+	const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+	class Human {
+		constructor(name, lastName, phrase) {
+			this.name = name;
+			this.lastName = lastName;
+			this.phrase = phrase;
+		}
+		get returnPhrase() {
+			return `${this.phrase} ${this.name} ${this.lastName}`;
+		}
+		set actualPhrase(phrs) {
+			this.phrase = phrs;
+		}
+	}
+
+	class Howold extends Human {
+		constructor(name, lastName, phrase, age) {
+			super(name, lastName, phrase);
+			this.age = age;
+		}
+		isAdult() {
+			return (this.age >= 18 ? true : false);
+		}
+	}
+
+	let human = new Howold('Артур', 'Саг', 'Hi', 18);
+	human.actualPhrase = 'Hello';
+
+	for (let i = 0; i < 10; i++)
+		hunmanArray[i] = new Howold(firstNameArray[i], secondNameArray[i], 'Hi', getRandomInt(10, 90));
+
+	for (let age of hunmanArray) {
+		(age.age % 2 == 0 ? onlyEven[z++] = age : '');
+		(age.isAdult() === true ? onlyAdult[x++] = age : onlyNotAdult[c++] = age);
+	}
+
+	console.log(`Возвращаемая фраза: ${human.returnPhrase}, Результат проверки на возраст: ${human.isAdult()}`);
+	console.log('Расширенный класс:', human);
+	console.log('Массив из классов второго типа:', hunmanArray);
+	console.log('Только четные:', onlyEven);
+	console.log('Только старше 18 лет:', onlyAdult);
+	console.log('Только младше 18 лет:', onlyNotAdult);
+}
+</script>
