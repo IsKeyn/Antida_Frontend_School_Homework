@@ -1,0 +1,48 @@
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+
+<script>
+{
+	let getUser = async(startId) => fetch(`https://api.github.com/users?since=${startId}`),
+		finalArray = [],
+		startId = 0,
+		i = 0,
+		n;
+
+	const getUserAvatars = (n, start) => {
+
+		getUser(start)
+			.then((response) => response.json())
+			.then((users) => {
+
+				let lastElement = users[users.length - 1].id;
+
+				for (let user of users) {
+
+					if (i <= n) {
+
+						finalArray[i] = {};
+						finalArray[i].avatar = user.avatar_url;
+						finalArray[i].id = user.id;
+						finalArray[i].username = user.login;
+
+						i++;
+					} else {
+
+						continue;
+					}
+				}
+
+				if (finalArray.length < n) {
+					
+					getUserAvatars(n, lastElement);
+				} else {
+					
+					//return finalArray;
+					console.table(finalArray);
+				}
+			});;
+	}
+
+	getUserAvatars(40);
+}
+</script>
